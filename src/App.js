@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-
-// Dữ liệu mẫu ban đầu (tối thiểu 3 sinh viên có: id, name, score, class)
 const initialStudents = [
   { id: 1, name: 'Nguyễn Văn A', score: 8.5, class: 'D23CQCN01-B' },
   { id: 2, name: 'Trần Thị B', score: 4.0, class: 'D23CQCN01-B' },
   { id: 3, name: 'Lê Hoàng C', score: 9.0, class: 'D23CQCN02-B' }
 ];
-
-// 1. Component cháu: Hiển thị chi tiết từng dòng dữ liệu của một sinh viên (Dùng Destructuring Props)
 const StudentItem = ({ student, onDelete }) => {
   // Destructuring các thuộc tính từ object student
   const { id, name, score, class: className } = student;
@@ -29,8 +25,6 @@ const StudentItem = ({ student, onDelete }) => {
     </tr>
   );
 };
-
-// 2. Component con: Nhận danh sách qua Props để hiển thị dạng bảng (Dùng .map() render danh sách)
 const StudentTable = ({ students, onDelete }) => {
   return (
     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '15px' }}>
@@ -59,82 +53,51 @@ const StudentTable = ({ students, onDelete }) => {
     </table>
   );
 };
-
-// 3. Component cha: Quản lý state chính (danh sách sinh viên, bộ lọc, form nhập liệu)
 const App = () => {
-  // State quản lý danh sách sinh viên
   const [students, setStudents] = useState(initialStudents);
-
-  // State quản lý dữ liệu form
   const [name, setName] = useState('');
   const [score, setScore] = useState('');
   const [className, setClassName] = useState('');
-
-  // State quản lý bộ lọc: 'ALL', 'EXCELLENT' (>= 8), 'FAILED' (< 5)
   const [filter, setFilter] = useState('ALL');
-
-  // State báo lỗi ràng buộc dữ liệu
   const [errorMessage, setErrorMessage] = useState('');
-
-  // Thêm sinh viên mới
   const handleAddStudent = (e) => {
     e.preventDefault();
-
-    // Ràng buộc dữ liệu: Không để trống
     if (!name.trim() || score === '' || !className.trim()) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin: Họ tên, Điểm số và Lớp!');
       return;
     }
-
     const numericScore = parseFloat(score);
-
-    // Ràng buộc dữ liệu: Điểm số từ 0 đến 10
     if (isNaN(numericScore) || numericScore < 0 || numericScore > 10) {
       setErrorMessage('Điểm số phải là một số từ 0 đến 10!');
       return;
     }
-
-    // Xóa thông báo lỗi nếu dữ liệu hợp lệ
     setErrorMessage('');
-
     const newStudent = {
       id: Date.now(),
       name: name.trim(),
       score: numericScore,
       class: className.trim()
     };
-
-    // Cập nhật danh sách (không làm mất dữ liệu cũ)
     setStudents((prev) => [...prev, newStudent]);
-
-    // Reset ô nhập
     setName('');
     setScore('');
     setClassName('');
   };
-
-  // Xóa sinh viên
   const handleDeleteStudent = (id) => {
     setStudents((prev) => prev.filter((student) => student.id !== id));
   };
-
-  // Áp dụng phương thức .filter() để lọc danh sách hiển thị
   const filteredStudents = students.filter((student) => {
     if (filter === 'EXCELLENT') return student.score >= 8;
     if (filter === 'FAILED') return student.score < 5;
     return true; // 'ALL'
   });
-
-  // Áp dụng phương thức .reduce() tính điểm trung bình của toàn lớp
   const totalStudents = students.length;
   const averageScore = totalStudents > 0
     ? (students.reduce((acc, student) => acc + student.score, 0) / totalStudents).toFixed(2)
     : 0;
-
   return (
     <div style={{ maxWidth: '800px', margin: '20px auto', fontFamily: 'Arial, sans-serif', padding: '0 15px' }}>
       <h2 style={{ color: '#333', textAlign: 'center' }}>Ứng dụng Quản lý Điểm Sinh viên</h2>
-
       {/* Form nhập liệu */}
       <form onSubmit={handleAddStudent} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
         <input
@@ -197,14 +160,11 @@ const App = () => {
           Trượt môn (&lt; 5)
         </button>
       </div>
-
-      {/* Component con render danh sách */}
       <StudentTable students={filteredStudents} onDelete={handleDeleteStudent} />
     </div>
   );
 };
 
-// CSS inline đơn giản
 const thStyle = { border: '1px solid #ddd', padding: '8px', textAlign: 'left' };
 const tdStyle = { border: '1px solid #ddd', padding: '8px' };
 const inputStyle = { padding: '6px 10px', fontSize: '14px', flex: '1', minWidth: '120px' };
