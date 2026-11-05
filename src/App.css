@@ -1,0 +1,20 @@
+.app-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+.navbar { display: flex; gap: 15px; margin-bottom: 20px; }
+.navbar a { text-decoration: none; color: black; }
+.active-link { color: blue !important; text-decoration: underline !important; }
+.q-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.q-table th, .q-table td { border: 1px solid #ccc; padding: 8px; }
+.answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.answer-btn { padding: 15px; cursor: pointer; border: 1px solid #ccc; background: white; text-align: left; }
+.hidden-btn { visibility: hidden; }
+.selected-yellow { background-color: yellow; }
+.correct-green, .correct-bg { background-color: lightgreen; }
+.wrong-red { background-color: salmon; }
+.timer { font-weight: bold; font-size: 1.2rem; }
+.red-text { color: red; }
+.score-cells { display: flex; gap: 5px; margin: 10px 0; }
+.s-cell { width: 30px; height: 30px; background: #eee; display: flex; align-items: center; justify-content: center; }
+.current-cell { border: 2px solid black; }
+.correct-cell { background: lightgreen; }
+.lifebuoy-cell { background: orange; }
+.helpers { display: flex; gap: 10px; margin-top: 20px; }
